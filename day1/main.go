@@ -14,8 +14,7 @@ func main() {
 	read, err := os.ReadFile("./input.txt")
 
 	if err != nil {
-		fmt.Println(err)
-		return
+		panic(err)
 	}
 	//convert to string
 	input := string(read)
@@ -51,7 +50,6 @@ func main() {
 	for i := 0; i < len(leftList); i++ {
 		distance = append(distance, int(math.Abs(float64(leftList[i])-float64(rightList[i]))))
 	}
-	fmt.Println(distance)
 
 	//totalize
 	total := 0
