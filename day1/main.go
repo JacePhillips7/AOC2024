@@ -56,7 +56,7 @@ func main() {
 	for _, v := range distance {
 		total += v
 	}
-	fmt.Println(total)
+	fmt.Println("total:" + string(total))
 }
 
 func sortArray(arr []int) {
