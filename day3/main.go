@@ -11,10 +11,17 @@ import (
 func main() {
 
 	file := readfile()
-	re := regexp.MustCompile(`(?m)(mul\(+\d+,\d+\))`)
+	re := regexp.MustCompile(`(?m)(mul\(+\d+,\d+\))|(do\(\))|(don't\(\))`)
 	total := 0
+	mul := true
 	for _, match := range re.FindAllString(file, -1) {
-		total += runMul(match)
+		if match == "don't()" {
+			mul = false
+		} else if match == "do()" {
+			mul = true
+		} else if mul {
+			total += runMul(match)
+		}
 	}
 	fmt.Println(total)
 
@@ -38,4 +45,5 @@ func runMul(s string) int {
 	num2, _ := strconv.Atoi(numbs[1])
 
 	return num1 * num2
+
 }
