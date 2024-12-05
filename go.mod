@@ -1,3 +1,3 @@
-module example.com/m
+module aoc2024
 
 go 1.23.0
