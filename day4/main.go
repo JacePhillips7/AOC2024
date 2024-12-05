@@ -12,6 +12,7 @@ func main() {
 	var full_array [][]string // => [[X,M,A,S],[X,M,A,S]]
 	//
 	totalCount := 0
+	part2Count := 0
 	for _, v := range lines {
 		line := strings.Split(v, "")
 		full_array = append(full_array, line)
@@ -19,6 +20,7 @@ func main() {
 
 	for y, y_line := range full_array {
 		for x := range y_line {
+			//this is for part 1
 			if checkSpace(full_array, "X", x, y) { //start by looking for the X
 				//we found the X, now get the directions of M
 				directions := searchFor(full_array, "M", x, y)
@@ -29,11 +31,15 @@ func main() {
 						totalCount++
 					}
 				}
-
 			}
+			//this is for part 2
 		}
 	}
-	fmt.Println(totalCount)
+	fmt.Print("Part 1 total: ")
+	fmt.Print(totalCount)
+	fmt.Println()
+	fmt.Print("Part 2 total: ")
+	fmt.Print(part2Count)
 }
 func readfile() string {
 	file, err := os.ReadFile("./input.txt")
