@@ -152,12 +152,16 @@ func checkX_MAS(arr [][]string, x int, y int) int {
 	return total
 }
 func check_shape(arr [][]string, x int, y int, legs [][]int) bool {
-	calc := 0
+	passing := 0
 	for _, leg := range legs {
 		invert_leg := getInvers(leg)
-		calc += getValue(arr, x+leg[0], y+leg[1]) + getValue(arr, x+invert_leg[0], y+invert_leg[1])
+		calc := getValue(arr, x+leg[0], y+leg[1]) + getValue(arr, x+invert_leg[0], y+invert_leg[1])
+		if calc != 11 {
+			return false
+		}
+		passing++
 	}
-	return calc == 22
+	return passing == 2
 }
 func getValue(arr [][]string, x int, y int) int {
 	if checkSpace(arr, "M", x, y) {
