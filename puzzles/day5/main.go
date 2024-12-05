@@ -15,15 +15,15 @@ func main() {
 	file := read_file.ReadFile("./input.txt")
 	rules, data := buildData(file)
 
-	total := 0
+	correctTotal := 0
 
 	for _, d := range data {
 		if checkRules(rules, d) {
 			mid := getMiddleNumber(d)
-			total += mid
+			correctTotal += mid
 		}
 	}
-	fmt.Println(total)
+	fmt.Println(correctTotal)
 }
 
 func buildData(file string) (Rules, Data) {
