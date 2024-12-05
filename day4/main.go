@@ -146,14 +146,7 @@ func checkX_MAS(arr [][]string, x int, y int) int {
 		{-1, 1},
 		{1, 1},
 	}
-	plus_legs := [][]int{
-		{0, 1},
-		{1, 0},
-	}
 	if check_shape(arr, x, y, x_legs) {
-		total++
-	}
-	if check_shape(arr, x, y, plus_legs) {
 		total++
 	}
 	return total
