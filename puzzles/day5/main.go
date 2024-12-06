@@ -2,7 +2,9 @@ package main
 
 import (
 	read_file "aoc2024/library"
+	"errors"
 	"fmt"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -16,14 +18,18 @@ func main() {
 	rules, data := buildData(file)
 
 	correctTotal := 0
-
+	incorrectTotal := 0
 	for _, d := range data {
 		if checkRules(rules, d) {
-			mid := getMiddleNumber(d)
-			correctTotal += mid
+			correctTotal += getMiddleNumber(d)
+		} else {
+			//correct the line and add value to incorrectTotal
+			correct_arry := makeComply(rules, d)
+			incorrectTotal += getMiddleNumber(correct_arry)
 		}
 	}
 	fmt.Println(correctTotal)
+	fmt.Println(incorrectTotal)
 }
 
 func buildData(file string) (Rules, Data) {
@@ -69,6 +75,7 @@ func checkRules(r Rules, data string) bool {
 		}
 		//if index 1 is not first, we have broken the rule
 		if index1 > index2 {
+			// fmt.Println("Failed on rule: " + strings.Join(rule, "|"))
 			return false
 		}
 	}
@@ -77,4 +84,32 @@ func checkRules(r Rules, data string) bool {
 func getMiddleNumber(line string) int {
 	arr := stringToIntArry(line, ",")
 	return arr[len(arr)/2]
+}
+func makeComply(r Rules, line string) string {
+	arr := strings.Split(line, ",") //split at the ,
+	mappedData := map[string]int{}  //make a map to weight the data vs the rules
+	for _, data := range arr {
+		mappedData[data] = 0
+	}
+	for _, data := range arr {
+		for _, rule := range r {
+			if rule[1] == data {
+				_, ok := mappedData[rule[0]]
+				if ok {
+					mappedData[rule[0]]++
+				}
+			}
+		}
+	}
+	sort.Slice(arr, func(i, j int) bool {
+		return mappedData[arr[i]] > mappedData[arr[j]]
+	})
+
+	fmt.Println(mappedData)
+	//this is to ensure all rules are passing
+	if !checkRules(r, strings.Join(arr, ",")) {
+		panic(errors.New("UH OH FAILED RULE"))
+	}
+
+	return strings.Join(arr, ",")
 }
