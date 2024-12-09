@@ -64,18 +64,21 @@ func findNodes(antennas []cord, xbounds int, ybounds int) []cord {
 			}
 			//get dSlope and then double to find the node cord
 			dSlope := cord{
-				x: (other.x - loc.x) * 2,
-				y: (other.y - loc.y) * 2,
+				x: (other.x - loc.x),
+				y: (other.y - loc.y),
 			}
 
 			node := cord{
 				x: loc.x + dSlope.x,
 				y: loc.y + dSlope.y,
 			}
-			if node.x > xbounds || node.x < 0 || node.y > ybounds || node.y < 0 { //off map, so we don't care
-				continue
+			for node.x <= xbounds && node.x >= 0 && node.y <= ybounds && node.y >= 0 { //off map check
+				cords = append(cords, node)
+				node = cord{
+					x: node.x + dSlope.x,
+					y: node.y + dSlope.y,
+				}
 			}
-			cords = append(cords, node)
 
 		}
 	}
