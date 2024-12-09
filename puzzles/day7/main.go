@@ -57,6 +57,10 @@ func createAllPossible(n int) [][]string {
 		// Try "*" at the current position and recurse
 		arr[index] = "*"
 		generate(index + 1)
+
+		//part 2 add the || operator
+		arr[index] = "||"
+		generate(index + 1)
 	}
 
 	generate(0) // Start recursion
@@ -71,8 +75,13 @@ func runTest(numbs []uint64, possible_operators [][]string, solution uint64) (bo
 		for i := 1; i < len(numbs); i++ {
 			if operators[i-1] == "+" {
 				test_solution += numbs[i]
-			} else {
+			} else if operators[i-1] == "*" {
 				test_solution = test_solution * numbs[i]
+			} else if operators[i-1] == "||" {
+				s := strconv.Itoa(int(test_solution)) + strconv.Itoa(int(numbs[i]))
+				parseme, _ := strconv.Atoi(s)
+				test_solution = uint64(parseme)
+
 			}
 		}
 		if test_solution == solution {
