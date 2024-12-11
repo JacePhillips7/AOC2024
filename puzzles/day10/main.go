@@ -30,8 +30,9 @@ func main() {
 	sum := 0
 	trailHeads := findTrailheads(myMap)
 	for _, v := range trailHeads {
-		heads := trailBlaze(myMap, v)
-		sum += heads
+		heads := make(map[ICords]bool)
+		trailBlaze(myMap, v, heads)
+		sum += len(heads)
 		fmt.Printf("[%v,%v] found %v paths", v.x, v.y, heads)
 		fmt.Println()
 	}
@@ -51,18 +52,16 @@ func findTrailheads(trail [][]int) []ICords {
 	return foundCords
 }
 
-func trailBlaze(trail [][]int, loc ICords) int {
+func trailBlaze(trail [][]int, loc ICords, heads map[ICords]bool) {
 	value := trail[loc.y][loc.x]
 	if value == 9 {
-		return 1
+		heads[loc] = true
+		return
 	}
 	paths := getNextSteps(trail, loc)
-	total := 0
-
 	for _, nextLoc := range paths {
-		total += trailBlaze(trail, nextLoc)
+		trailBlaze(trail, nextLoc, heads)
 	}
-	return total
 }
 
 func getNextSteps(trail [][]int, loc ICords) []ICords {
