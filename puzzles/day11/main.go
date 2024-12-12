@@ -1,3 +1,4 @@
+// 65601038650482 -- too low
 package main
 
 import (
@@ -12,39 +13,43 @@ func main() {
 	file := read_file.ReadFile("./input.txt")
 	s := strings.Split(file, " ")
 	stones := toInts(s)
-	blinks := 25
-	for range blinks {
-		stones = mutate(stones)
-		fmt.Println(stones)
+	stoneMap := make(map[int]int)
+	blinks := 75
+	//set map
+	for _, v := range stones {
+		stoneMap[v]++
 	}
-	fmt.Println(len(stones))
+	for range blinks {
+		stoneMap = mutate(stoneMap)
+		// fmt.Println(stoneMap)
+		// fmt.Println(len(stoneMap))
+	}
+	total := 0
+	for v := range stoneMap {
+		total += stoneMap[v]
+	}
+	fmt.Println(total)
 }
 
-func mutate(s []int) []int {
-	stones := s
-	for i := 0; i < len(stones); i++ {
-		v := stones[i]
+func mutate(stoneMap map[int]int) map[int]int {
+	updatedMap := make(map[int]int)
+	for v := range stoneMap {
 		if v == 0 {
-			stones[i] = 1
+			updatedMap[1] += stoneMap[v]
 			continue
 		}
 		stringV := strconv.Itoa(v)
 		arr := strings.Split(stringV, "")
 		if len(arr)%2 == 0 {
 			leftV, rightV := splitHalf(stringV)
-			stones[i] = leftV
-			if i != len(stones) {
-				stones = append(stones[:i+1], stones[i:]...)
-				i++
-				stones[i] = rightV
-			} else {
-				stones = append(stones, rightV)
-			}
+			updatedMap[leftV] += stoneMap[v]
+			updatedMap[rightV] += stoneMap[v]
 			continue
 		}
-		stones[i] = v * 2024
+		val := v * 2024
+		updatedMap[val] += stoneMap[v]
 	}
-	return stones
+	return updatedMap
 }
 
 func toInts(s []string) []int {
